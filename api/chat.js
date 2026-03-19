@@ -17,7 +17,7 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "HuggingFaceH4/zephyr-7b-beta",
+          model: "google/gemma-2b-it",
           messages: [
             { role: "system", content: "Sei un assistente utile." },
             { role: "user", content: message }
