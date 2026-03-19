@@ -1,7 +1,5 @@
 export default async function handler(req, res) {
   try {
-    console.log("Request body:", req.body);
-
     const { message } = req.body || {};
 
     if (!message) {
@@ -9,15 +7,17 @@ export default async function handler(req, res) {
     }
 
     const response = await fetch(
-      "https://router.huggingface.co/v1/chat/completions",
+      "https://openrouter.ai/api/v1/chat/completions",
       {
         method: "POST",
         headers: {
-          "Authorization": `Bearer ${process.env.HF_API_KEY}`,
-          "Content-Type": "application/json"
+          "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": "https://tuo-sito.com", // opzionale
+          "X-Title": "Chatbot Test" // opzionale
         },
         body: JSON.stringify({
-          model: "google/gemma-2b-it",
+          model: "mistralai/mistral-7b-instruct:free",
           messages: [
             { role: "system", content: "Sei un assistente utile." },
             { role: "user", content: message }
@@ -26,36 +26,16 @@ export default async function handler(req, res) {
       }
     );
 
-    console.log("Status HF:", response.status);
+    const data = await response.json();
 
-    // 🔒 parsing sicuro (evita crash)
-    const text = await response.text();
+    console.log("OpenRouter:", data);
 
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch (e) {
-      console.error("Invalid JSON:", text);
-      return res.status(500).json({
-        reply: "Errore: risposta non valida dal server AI"
-      });
-    }
-
-    console.log("HF response:", data);
-
-    // ❌ errore API
     if (!response.ok) {
-      const errorMsg =
-        data?.error?.message ||
-        data?.error ||
-        JSON.stringify(data);
-
       return res.status(500).json({
-        reply: "Errore HF: " + errorMsg
+        reply: "Errore API: " + JSON.stringify(data)
       });
     }
 
-    // ✅ risposta normale
     const reply =
       data?.choices?.[0]?.message?.content ||
       "Nessuna risposta";
@@ -63,7 +43,7 @@ export default async function handler(req, res) {
     return res.status(200).json({ reply });
 
   } catch (err) {
-    console.error("SERVER ERROR:", err);
+    console.error(err);
 
     return res.status(500).json({
       reply: "Errore server: " + err.message
