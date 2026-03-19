@@ -17,7 +17,7 @@ export default async function handler(req, res) {
           "X-Title": "Chatbot Test" // opzionale
         },
         body: JSON.stringify({
-          model: "mistralai/mistral-7b-instruct:free",
+          model: "mistralai/mistral-7b-instruct",
           messages: [
             { role: "system", content: "Sei un assistente utile." },
             { role: "user", content: message }
