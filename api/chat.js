@@ -37,12 +37,27 @@ export default async function handler(req, res) {
       });
     }
 
+    
+  const choice = data?.choices?.[0];
+
+    
     const reply =
-      data?.choices?.[0]?.message?.content ||
-      "Nessuna risposta";
+  choice?.message?.content ||
+  choice?.text ||
+  JSON.stringify(choice) ||
+  "Nessuna risposta";
 
     return res.status(200).json({ reply });
 
+
+
+
+
+
+    
+
+
+    
   } catch (err) {
     console.error(err);
 
