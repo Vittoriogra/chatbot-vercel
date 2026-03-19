@@ -3,7 +3,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.2",
+      "https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.2",
       {
         method: "POST",
         headers: {
@@ -11,22 +11,19 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          inputs: message
+          inputs: `<s>[INST] ${message} [/INST]`
         })
       }
     );
 
     const data = await response.json();
 
-    // DEBUG
     console.log("HF response:", data);
 
     let reply = "Errore";
 
     if (Array.isArray(data)) {
       reply = data[0]?.generated_text || "Nessuna risposta";
-    } else if (data.generated_text) {
-      reply = data.generated_text;
     } else if (data.error) {
       reply = "Errore API: " + data.error;
     }
