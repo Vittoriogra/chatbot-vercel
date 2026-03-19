@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html>
+<head>
+  <title>Preghiere</title>
+</head>
 <body>
 
-<h2>Chatbot</h2>
+<h2>Richiesta di preghiera</h2>
 
-<div id="chat"></div>
-<input id="input" placeholder="Scrivi..." />
+<textarea id="input" placeholder="Scrivi qui..."></textarea>
+<br><br>
 <button onclick="send()">Invia</button>
+
+<p id="response"></p>
 
 <script>
 async function send() {
-  const input = document.getElementById("input");
-  const msg = input.value;
+  const message = document.getElementById("input").value;
 
   const res = await fetch("/api/chat", {
     method: "POST",
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify({ message: msg })
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ message })
   });
 
   const data = await res.json();
-
-  document.getElementById("chat").innerHTML += `
-    <p><b>Tu:</b> ${msg}</p>
-    <p><b>Bot:</b> ${data.reply}</p>
-  `;
+  document.getElementById("response").innerText = data.reply;
 }
 </script>
 
