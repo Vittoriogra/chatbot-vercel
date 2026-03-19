@@ -18,8 +18,9 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           model: "nvidia/nemotron-3-super-120b-a12b:free",
+          max_tokens: 50,
           messages: [
-            { role: "system", content: "Sei un assistente utile." },
+            { role: "system", content: "Devi rispondere a richieste di preghiera. Devi essere incoraggiante. Rispondi in massimo 3 frasi." },
             { role: "user", content: message }
           ]
         })
