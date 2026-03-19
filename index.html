@@ -41,10 +41,6 @@
       outline: none;
     }
 
-    textarea:focus {
-      border-color: #0070f3;
-    }
-
     button {
       margin-top: 15px;
       width: 100%;
@@ -55,7 +51,6 @@
       color: white;
       font-size: 16px;
       cursor: pointer;
-      transition: 0.2s;
     }
 
     button:hover {
@@ -63,18 +58,26 @@
     }
 
     .response {
-      margin-top: 20px;
       padding: 12px;
       background: #f0f4ff;
       border-radius: 8px;
       font-size: 14px;
       color: #333;
-      min-height: 40px;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .loading {
-      color: #888;
-      font-size: 14px;
+      font-size: 16px;
+      color: #666;
+    }
+
+    .reset-btn {
+      margin-top: 15px;
+      background: #eee;
+      color: #333;
     }
   </style>
 </head>
@@ -82,45 +85,17 @@
 <body>
 
 <div class="container">
-  <h2>Richiesta di Preghiera</h2>
+  <h2>🙏 Richiesta di Preghiera</h2>
 
-  <textarea id="input" placeholder="Scrivi la tua richiesta..."></textarea>
+  <div id="box">
+    <textarea id="input" placeholder="Scrivi la tua richiesta..."></textarea>
+  </div>
 
   <button onclick="send()">Invia</button>
-
-  <div id="response" class="response"></div>
 </div>
 
-<script>
-async function send() {
-  const message = document.getElementById("input").value;
-  const responseBox = document.getElementById("response");
-
-  if (!message) {
-    responseBox.innerText = "Scrivi qualcosa";
-    return;
-  }
-
-  responseBox.innerHTML = "<span class='loading'>Sto pensando...</span>";
-
-  try {
-    const res = await fetch("/api/chat", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ message })
-    });
-
-    const data = await res.json();
-
-    responseBox.innerText = data.reply;
-
-  } catch (err) {
-    responseBox.innerText = "Errore, riprova.";
-  }
-}
-</script>
+<!-- collega il tuo file JS -->
+<script src="chat.js"></script>
 
 </body>
 </html>
