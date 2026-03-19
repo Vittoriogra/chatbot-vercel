@@ -1,7 +1,5 @@
 export default async function handler(req, res) {
   try {
-    console.log("Request body:", req.body);
-
     const { message } = req.body;
 
     if (!message) {
@@ -9,7 +7,7 @@ export default async function handler(req, res) {
     }
 
     const response = await fetch(
-      "https://router.huggingface.co/hf-inference/models/mistralai/Mistral-7B-Instruct-v0.2",
+      "https://router.huggingface.co/v1/chat/completions",
       {
         method: "POST",
         headers: {
@@ -17,12 +15,13 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          inputs: `<s>[INST] ${message} [/INST]`
+          model: "mistralai/Mistral-7B-Instruct-v0.2",
+          messages: [
+            { role: "user", content: message }
+          ]
         })
       }
     );
-
-    console.log("Status HF:", response.status);
 
     const data = await response.json();
 
@@ -34,11 +33,8 @@ export default async function handler(req, res) {
       });
     }
 
-    let reply = "Nessuna risposta";
-
-    if (Array.isArray(data)) {
-      reply = data[0]?.generated_text || reply;
-    }
+    const reply =
+      data.choices?.[0]?.message?.content || "Nessuna risposta";
 
     return res.status(200).json({ reply });
 
