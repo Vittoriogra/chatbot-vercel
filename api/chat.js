@@ -18,7 +18,7 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           model: "nvidia/nemotron-3-super-120b-a12b:free",
-          max_tokens: 50,
+          max_tokens: 250,
           messages: [
             { role: "system", content: "Devi rispondere a richieste di preghiera. Devi essere incoraggiante. Rispondi in massimo 3 frasi." },
             { role: "user", content: message }
@@ -38,13 +38,10 @@ export default async function handler(req, res) {
     }
 
     
-  const choice = data?.choices?.[0];
+ const choice = data?.choices?.[0];
 
-    
-    const reply =
+const reply =
   choice?.message?.content ||
-  choice?.text ||
-  JSON.stringify(choice) ||
   "Nessuna risposta";
 
     return res.status(200).json({ reply });
