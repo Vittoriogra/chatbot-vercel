@@ -17,7 +17,7 @@ export default async function handler(req, res) {
           "X-Title": "Chatbot Test" // opzionale
         },
         body: JSON.stringify({
-          model: "openchat/openchat-7b:free",
+          model: "nvidia/nemotron-3-super-120b-a12b:free",
           messages: [
             { role: "system", content: "Sei un assistente utile." },
             { role: "user", content: message }
