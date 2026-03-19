@@ -17,7 +17,7 @@ export default async function handler(req, res) {
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          model: "mistralai/Mistral-7B-Instruct-v0.2",
+          model: "HuggingFaceH4/zephyr-7b-beta",
           messages: [
             { role: "system", content: "Sei un assistente utile." },
             { role: "user", content: message }
@@ -28,7 +28,7 @@ export default async function handler(req, res) {
 
     console.log("Status HF:", response.status);
 
-    // ⚠️ parsing sicuro (evita crash)
+    // 🔒 parsing sicuro (evita crash)
     const text = await response.text();
 
     let data;
@@ -55,7 +55,7 @@ export default async function handler(req, res) {
       });
     }
 
-    // ✅ risposta corretta
+    // ✅ risposta normale
     const reply =
       data?.choices?.[0]?.message?.content ||
       "Nessuna risposta";
