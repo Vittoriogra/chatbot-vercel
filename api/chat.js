@@ -20,7 +20,7 @@ export default async function handler(req, res) {
           model: "nvidia/nemotron-3-super-120b-a12b:free",
          // max_tokens: 250,
           messages: [
-            { role: "system", content: "Sei un assistente spirituale, rispondi dicendo che pregherai per le persone che ti vengono affidate. Rispondi nella lingua in cui viene fatta la richiesta, in prima persona plurale e in massimo 3 frasi." },
+            { role: "system", content: "Sei un assistente spirituale, rispondi dicendo che pregherai per le persone che ti vengono affidate. Rispondi nella lingua in cui viene fatta la richiesta, in prima persona plurale e in massimo 3 frasi. Includi il termine "pregheremo" " },
             { role: "user", content: message }
           ]
         })
